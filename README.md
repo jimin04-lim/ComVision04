@@ -1,13 +1,15 @@
 # ComVision 04주차 실습
 # OpenCV 실습 과제
 
-## 0401. 이미지 불러오기 및 그레이스케일 변환
-- **설명**: 이미지를 불러오고 흑백으로 변환 후 나란히 출력
+## 0401. SIFT를 이용한 특징점 검출 및 시각화
+- **설명**: 주어진 이미지(color70.jpg)를 이용하여 SIFT알고리즘을 사용한 특징점 검출
 - **요구사항**:
-  - cv.imread()              :이미지 로드
-  - cv.cvtColor()            :이미지를 그레이스케일로 변환
-  - np.hstack()              :원본 이미지와 그레이스케일 이미지를 가로로 연결하여 출력
-  - cv.imshow(), cv.waitKey():결과를 화면에표시, 아무 키나 누르면 창이 닫히도록
+  - cv.SIFT_create()    :SIFT 객체 생성
+    - 매개변수를 변경하여 특징점 검출 결과를 비교(특징점이 너무 많다면 nfeatures값 조정)
+  - detectAndCompute()  :특징점 검출
+  - cv.drawKeypoints()  :특징점을 이미지에 시각화
+    - flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS를 설정하면 특징점의 방향과 크기도 표시
+  - matplotib           :원본 이미지와 특징점이 시각화된 이미지를 나란히 출력
 - **코드**
   ```python
   ```
@@ -18,13 +20,17 @@
 
 
 
-## 0402. 페인팅 붓 크기 조절
-- **설명**: 마우스 클릭으로 그림을 그리고, `+`, `-` 키로 붓 크기를 1~15까지(초기 5) 조절
+## 0402. SIFT를 이용한 두 영상 간 특징점 매칭
+- **설명**: 두 개의 이미지(mot_color70.jpg, mot_color80.jpg)를 입력받아 SIFT 특징점 기반으로 매칭을 수행하고 결과를 시각화
 - **요구사항**:
-  - 좌클릭(B)
-  - 우클릭(R)
-  - 드래그로 연속 그리기
-  - 창 종료(q)
+  - cv.imread()                             :두 개의 이미지를 불러옴
+  - cv.SIFT_create()                        :특징점 추출
+  - cv.BFMatcher()/cv.FlannBasedMatcher()   :두 영상 간 특징점 매칭
+    - FLANN 기반 매칭을 원한다면 FlannBasedMatcher()를 사용
+    - BFMatcher(cv.NORM_L2, crossCheck=True)을 사용하면 간단한 매칭 가능
+    - KnnMatch()와 DMatch() 객체를 활용하여 최근접 이웃 거리 비율을 적용하면 매칭 정확도를 높일 수 있음
+  - cv.drawMatches()                        :매칭결과 시각화
+  - matplotib                               :매칭 결과 출력
 - **코드**
   ```python
   ```
@@ -34,14 +40,18 @@
 - **결과물**: 
 
 
-## 0403. ROI(관심영역) 추출
-- **설명**: 마우스 드래그로 영역을 선택하고 영역만 저장 혹은 표시
+## 0403. 호모드래피를 이용한 이미지 정합
+- **설명**: SIFT 특징점을 사용한 두 이미지(img1.jpg, img2.jpg, img3.jpg 중 택 2) 간 대응점 검출 후 호모그래피를 계산하여 하나의 이미지 위에 정렬
 - **요구사항**:
-  - cv.setMouseCallback()을사용하여마우스이벤트를처리
-  - 사용자가클릭한시작점에서드래그하여사각형을그리며영역을선택
-  - 마우스를놓으면해당영역을잘라내서별도의창에출력
-  - r :선택을리셋하고처음부터다시선택
-  - s :선택한영역을이미지파일로저장
+  - cv.imread()                :두 개의 이미지를 불러옴
+  - cv.SIFT_create()           :특징점 검출
+  - cv.BFMatcher()과 knnMatch():특징점 매칭, 좋은 매칭점만 선별
+    - knnMatch()로 두개의 최근접 이웃을 구한 뒤, 거리 비율이 임계값(예: 0.7)미만인 매칭점만 선별
+  - cv.findHomography()        :호모그래피 행렬을 계산
+    - cv.RANSAC을 사용하면 Outlier 영향을 줄일 수 있음
+  - cv.warpPerspective()       :한 이미지를 변환하여 다른 이미지와 정렬
+    - 출력 크기는 두 이미지를 합친 파노라마 크기(w1+w2, max(h1,h2))로 설정
+  - 변환 이미지(Warped Image)와 특징점 매칭 결과(Matching Result)를 나란히 출력
 - **코드**
   ```python
   ```
