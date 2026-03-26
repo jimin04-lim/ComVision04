@@ -5,10 +5,10 @@
 - **설명**: 주어진 이미지(color70.jpg)를 이용하여 SIFT알고리즘을 사용한 특징점 검출
 - **요구사항**:
   - cv.SIFT_create()    :SIFT 객체 생성
-    - 매개변수를 변경하여 특징점 검출 결과를 비교(특징점이 너무 많다면 nfeatures값 조정)
+    - _매개변수를 변경하여 특징점 검출 결과를 비교(특징점이 너무 많다면 nfeatures값 조정)_
   - detectAndCompute()  :특징점 검출
   - cv.drawKeypoints()  :특징점을 이미지에 시각화
-    - flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS를 설정하면 특징점의 방향과 크기도 표시
+    - _flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS를 설정하면 특징점의 방향과 크기도 표시_
   - matplotib           :원본 이미지와 특징점이 시각화된 이미지를 나란히 출력
 - **코드**
   ```python
@@ -26,9 +26,9 @@
   - cv.imread()                             :두 개의 이미지를 불러옴
   - cv.SIFT_create()                        :특징점 추출
   - cv.BFMatcher()/cv.FlannBasedMatcher()   :두 영상 간 특징점 매칭
-    - FLANN 기반 매칭을 원한다면 FlannBasedMatcher()를 사용
-    - BFMatcher(cv.NORM_L2, crossCheck=True)을 사용하면 간단한 매칭 가능
-    - KnnMatch()와 DMatch() 객체를 활용하여 최근접 이웃 거리 비율을 적용하면 매칭 정확도를 높일 수 있음
+    - _FLANN 기반 매칭을 원한다면 FlannBasedMatcher()를 사용_
+    - _BFMatcher(cv.NORM_L2, crossCheck=True)을 사용하면 간단한 매칭 가능_
+    - _KnnMatch()와 DMatch() 객체를 활용하여 최근접 이웃 거리 비율을 적용하면 매칭 정확도를 높일 수 있음_
   - cv.drawMatches()                        :매칭결과 시각화
   - matplotib                               :매칭 결과 출력
 - **코드**
@@ -46,11 +46,11 @@
   - cv.imread()                :두 개의 이미지를 불러옴
   - cv.SIFT_create()           :특징점 검출
   - cv.BFMatcher()과 knnMatch():특징점 매칭, 좋은 매칭점만 선별
-    - knnMatch()로 두개의 최근접 이웃을 구한 뒤, 거리 비율이 임계값(예: 0.7)미만인 매칭점만 선별
+    - _knnMatch()로 두개의 최근접 이웃을 구한 뒤, 거리 비율이 임계값(예: 0.7)미만인 매칭점만 선별_
   - cv.findHomography()        :호모그래피 행렬을 계산
-    - cv.RANSAC을 사용하면 Outlier 영향을 줄일 수 있음
+    - _cv.RANSAC을 사용하면 Outlier 영향을 줄일 수 있음_
   - cv.warpPerspective()       :한 이미지를 변환하여 다른 이미지와 정렬
-    - 출력 크기는 두 이미지를 합친 파노라마 크기(w1+w2, max(h1,h2))로 설정
+    - _출력 크기는 두 이미지를 합친 파노라마 크기(w1+w2, max(h1,h2))로 설정_
   - 변환 이미지(Warped Image)와 특징점 매칭 결과(Matching Result)를 나란히 출력
 - **코드**
   ```python
